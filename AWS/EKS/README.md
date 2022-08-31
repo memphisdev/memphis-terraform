@@ -27,3 +27,8 @@ aws eks update-kubeconfig --name <clustername here>
 kubectl get ingress -n memphis
 ```
 **You can view status of load balancer from AWS Account EC2->Load Balancers once its stats is active. You can hit the URL to view Memphis UI**
+
+5. Login Details for root user
+```bash
+kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
+```
