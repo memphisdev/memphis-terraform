@@ -22,3 +22,11 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+## EKS Registry details can be found here. 
+##https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html
+variable "eksalb_addon_registryaccount" {
+  description = "AWS Provided Account number "
+  type        = string
+  default     = "602401143452"
+}
+

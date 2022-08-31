@@ -5,11 +5,11 @@ module "subnet_addrs" {
   networks = [
     {
       name     = "public1"
-      new_bits = 8
+      new_bits = 4
     },
     {
       name     = "public2"
-      new_bits = 8
+      new_bits = 4
     },
     {
       name     = "private1"
@@ -29,7 +29,7 @@ module "vpc" {
   cidr                 = var.vpc_cidr
   azs                  = data.aws_availability_zones.azs.names
   private_subnets      = [module.subnet_addrs.network_cidr_blocks["private1"],module.subnet_addrs.network_cidr_blocks["private2"]]
-  public_subnets       = [module.subnet_addrs.network_cidr_blocks["public1"]]
+  public_subnets       = [module.subnet_addrs.network_cidr_blocks["public1"],module.subnet_addrs.network_cidr_blocks["public2"]]
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true

@@ -4,7 +4,7 @@ module "eks" {
   enable_irsa     = true
   tags = local.tags
   cluster_name    = local.cluster_name
-  cluster_version = "1.22"
+  cluster_version = "1.23"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   vpc_id     = module.vpc.vpc_id
@@ -22,10 +22,10 @@ module "eks" {
     provider_key_arn = aws_kms_key.eks.arn
     resources        = ["secrets"]
   }]
-
+  
   eks_managed_node_groups = {
     managed_nodegrp = {
-      desired_size = 1
+      desired_size = 2
       instance_types = ["t3.large"]
       labels = {
         NodeGroupType    = "managed_node_groups"
@@ -33,25 +33,14 @@ module "eks" {
       }
     }
   }
-    
-  fargate_profiles = {
-    default = {
-      name = var.application
-      selectors = [
-        {
-          namespace = var.application
-        }
-      ]
-
-      tags = {
-        Owner = var.application
+  node_security_group_additional_rules = {
+    ingress_allow_access_from_control_plane = {
+      type                          = "ingress"
+      protocol                      = "tcp"
+      from_port                     = 9443
+      to_port                       = 9443
+      source_cluster_security_group = true
+      description                   = "Allow access from control plane to webhook port of AWS load balancer controller"
       }
-
-      timeouts = {
-        create = "20m"
-        delete = "20m"
-      }
-    }
   }
-
 }
