@@ -23,13 +23,13 @@ module "subnet_addrs" {
 }
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "3.14.2"
+  source               = "terraform-aws-modules/vpc/aws"
+  version              = "3.14.2"
   name                 = local.name_prefix
   cidr                 = var.vpc_cidr
   azs                  = data.aws_availability_zones.azs.names
-  private_subnets      = [module.subnet_addrs.network_cidr_blocks["private1"],module.subnet_addrs.network_cidr_blocks["private2"]]
-  public_subnets       = [module.subnet_addrs.network_cidr_blocks["public1"],module.subnet_addrs.network_cidr_blocks["public2"]]
+  private_subnets      = [module.subnet_addrs.network_cidr_blocks["private1"], module.subnet_addrs.network_cidr_blocks["private2"]]
+  public_subnets       = [module.subnet_addrs.network_cidr_blocks["public1"], module.subnet_addrs.network_cidr_blocks["public2"]]
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true

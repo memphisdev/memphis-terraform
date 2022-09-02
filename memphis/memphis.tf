@@ -18,7 +18,8 @@ resource "helm_release" "release" {
 
 resource "kubernetes_ingress_v1" "ingress" {
   depends_on = [
-    helm_release.release
+    helm_release.release,
+    module.eks
   ]
   metadata {
     name = var.application

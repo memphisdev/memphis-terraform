@@ -5,30 +5,27 @@
 #### Prerequisites
 1. Make sure your machine is connected with AWS Account using a AWS IAM User which has access to create resources.
 2. Terraform is installed
-3. Kubectl is installed (needed if you want to connect cluster)
+3. Kubectl is installed
+4. heml is install
 
 #### Steps
-1. Initialise Terraform
+1. Deploy EKS Cluster using Terraform
 ```bash
-terraform init
-```
-2. Plan Terraform to view resources which will be created during this deployment
-```bash
-terraform plan
-```
-3. Apply Terraform to create resources. Type yes when needed
-```bash
-terraform apply
+make infra
 ```
 
-4. Once deployment is complete. You can find Application Load Balancer URL via below kubectl
+2. Deploy Memphis App. Once deployment is complete. You can find Application Load Balancer URL.
 ```bash
-aws eks update-kubeconfig --name <clustername here>
-kubectl get ingress -n memphis
+make app
 ```
+
 **You can view status of load balancer from AWS Account EC2->Load Balancers once its stats is active. You can hit the URL to view Memphis UI**
 
-5. Login Details for root user
+3. Login Details for root user
 ```bash
 kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
+```
+4. Destroy Memphis App along with EKS Infra
+```bash
+make destroy
 ```

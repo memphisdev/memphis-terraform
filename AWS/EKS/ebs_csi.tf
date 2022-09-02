@@ -16,11 +16,11 @@ module "ebs_csi_irsa_role" {
 
 resource "kubernetes_service_account" "ebscsi-service-account" {
   metadata {
-    name = "ebs-csi-controller-sa"
+    name      = "ebs-csi-controller-sa"
     namespace = "kube-system"
     labels = {
-        "app.kubernetes.io/name"= "aws-ebs-csi-driver"
-        "app.kubernetes.io/component"= "controller"
+      "app.kubernetes.io/name"      = "aws-ebs-csi-driver"
+      "app.kubernetes.io/component" = "controller"
     }
     annotations = {
       "eks.amazonaws.com/role-arn" = module.ebs_csi_irsa_role.iam_role_arn
