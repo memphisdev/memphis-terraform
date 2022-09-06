@@ -25,7 +25,14 @@ make app
 ```bash
 kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
 ```
-4. Destroy Memphis App along with EKS Infra
+4. Destroy Memphis App.
 ```bash
-make destroy
+make destroyapp
+## Wait for ALB to be deleted....
+make destroyinfra
+```
+**Wait for ALB to be deleted from AWS Console**
+5. Destroy Memphis EKS Cluster.
+```bash
+make destroyinfra
 ```
