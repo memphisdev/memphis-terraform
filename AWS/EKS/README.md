@@ -28,10 +28,9 @@ kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" 
 4. Destroy Memphis App.
 ```bash
 make destroyapp
-## Wait for ALB to be deleted....
-make destroyinfra
 ```
 **Wait for ALB to be deleted from AWS Console**
+
 5. Destroy Memphis EKS Cluster.
 ```bash
 make destroyinfra
