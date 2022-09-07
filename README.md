@@ -37,8 +37,8 @@ Utilizing NATS core.
 
 
 <div align="center">
-<h1>Terraforming Memphis</h1>
-<h3>A powerful message broker for developers</h3>
+<h1>Getting Started</h1>
+<h3>Deploy Memphis.dev on AWS using Terraform</h3>
 </div>
 
 ### Memphis on AWS
