@@ -25,9 +25,9 @@ destroy:
 	@terraform destroy
 	
 destroyapp:
-	@echo "Deploying Memphis"
+	@echo "Destroy Memphis"
 	./memphis-uninstall.sh
 
 destroyinfra:
-	@echo "Deploying EKS"
+	@echo "Destroy EKS"
 	@terraform destroy   
