@@ -38,9 +38,11 @@ Utilizing NATS core.
 
 <div align="center">
 <h1>Getting Started</h1>
-<h3>Deploy Memphis.dev on AWS using Terraform</h3>
+<h3>Deploy Memphis.dev on cloud using Terraform</h3>
 </div>
 
 ### Memphis on AWS
 1. EKS (Amazon Elastic Kubernetes Service). [ClickHere](AWS/EKS/README.md)
 
+### Memphis on GCP
+1. GKE (Google Kubernetes Engine). [ClickHere](GCP/GKE/README.md)
