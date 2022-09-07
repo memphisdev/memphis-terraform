@@ -3,10 +3,11 @@
 ### Installation
 
 #### Prerequisites
-1. Make sure your machine is connected with AWS Account using a AWS IAM User which has access to create resources.
-2. Terraform is installed
-3. Kubectl is installed
-4. heml is install
+1. Make sure your machine is connected with [AWS Account](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=default&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start) using a AWS IAM User which has access to create resources(EKS,VPC,EC2)
+3. AWS CLI, [installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
+5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+6. heml is [installed](https://helm.sh/docs/intro/install/)
 
 #### Steps
 1. Deploy EKS Cluster using Terraform
