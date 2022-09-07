@@ -42,7 +42,12 @@ make app
 ```bash
 kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
 ```
-4. Destroy Memphis App.
+4. Destroy Memphis App + EKS Cluster
+```bash
+make destroy
+```
+
+5. Destroy Memphis App.
 ```bash
 make destroyapp
 ```
