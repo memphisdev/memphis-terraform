@@ -14,13 +14,14 @@
 <h1>A powerful messaging platform for modern developers</h1>
 </div>
 
-## Memphis Deployment on AWS EKS
+## Memphis Deployment on GCP GKE
 
 ### Installation
 
 #### Prerequisites
-1. Make sure your machine is connected with [AWS Account](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=default&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start) using a AWS IAM User which has access to create resources(EKS,VPC,EC2)
-3. AWS CLI, [installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+1. Make sure your machine is connected with [GCP Account](https://console.cloud.google.com/) +  Permissions to adjust resource quotas
+2. [GCP Project](https://console.cloud.google.com/projectcreate) + GCP [Service Account Key](https://console.cloud.google.com/apis/credentials/serviceaccountkey)
+3. gcloud SDK + CLI, [installed](https://cloud.google.com/sdk/docs/quickstarts) and configured
 4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
 5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 6. heml is [installed](https://helm.sh/docs/intro/install/)
