@@ -19,15 +19,19 @@
 ### Installation
 
 #### Prerequisites
-1. Make sure your machine is connected with [GCP Account](https://console.cloud.google.com/) +  Permissions to adjust resource quotas
+1. Make sure your machine is connected with [GCP Account](https://console.cloud.google.com/)
 2. [GCP Project](https://console.cloud.google.com/projectcreate) + GCP [Service Account Key](https://console.cloud.google.com/apis/credentials/serviceaccountkey)
-3. gcloud SDK + CLI, [installed](https://cloud.google.com/sdk/docs/quickstarts) and configured
+3. gcloud SDK + CLI [installed](https://cloud.google.com/sdk/docs/quickstarts), configuration depends on machine OS.
 4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
 5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-6. heml is [installed](https://helm.sh/docs/intro/install/)
+6. helm is [installed](https://helm.sh/docs/intro/install/)
 
 #### Steps
-1. Deploy GKE Cluster using Terraform
+0. Change default variables if necessary in *terraform.tfvars* file.(region,project and etc')
+
+1. Deploy GKE Cluster including:
+  - VPC
+  - 3 node fully functional GKE cluster based on **n2-standard-4** instances.
 ```bash
 make infra
 ```
