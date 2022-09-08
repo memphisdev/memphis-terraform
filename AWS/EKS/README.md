@@ -74,7 +74,7 @@
 
 1. Deploy EKS Cluster including:
   - VPC with 2 public + 2 private networks
-  - 3 node fully functional EKS cluster with EBS,ELB resources.
+  - 3 node fully functional EKS cluster based on **t3.large** instances with EBS,ELB resources.
 
 ```bash
 make infra
