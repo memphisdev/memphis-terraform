@@ -27,7 +27,7 @@
 6. helm is [installed](https://helm.sh/docs/intro/install/)
 
 #### Steps
-0. Change default variables if necessary in *terraform.tfvars* file.(region,project and etc')
+0. Change projectID variable in *terraform.tfvars* file.
 
 1. Deploy GKE Cluster including:
   - VPC
