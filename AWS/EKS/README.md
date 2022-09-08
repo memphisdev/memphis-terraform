@@ -70,11 +70,11 @@
 6. helm is [installed](https://helm.sh/docs/intro/install/)
  
 #### Steps
-0. Change default variables if necessary in variables.tf file.(region,cidr and etc')
+0. Change default variables if necessary in *variables.tf* file.(region,cidr and etc')
 
 1. Deploy EKS Cluster including:
   - VPC with 2 public + 2 private networks
-  - 3 node fully functional EKS cluster with EBS,ELB resources.
+  - 3 node fully functional EKS cluster based on **t3.large** instances with EBS,ELB resources.
 
 ```bash
 make infra
