@@ -22,10 +22,10 @@ app:
 
 allinone:
 	@terraform init
-        @terraform plan
-        @terraform apply
+	@terraform plan
+	@terraform apply
 	@echo "Deploying Memphis to EKS"
-        ./memphis-install.sh
+	./memphis-install.sh
 
 destroy:
 	@echo "Destroy Memphis+EKS"
