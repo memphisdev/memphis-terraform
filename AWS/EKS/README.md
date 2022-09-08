@@ -40,27 +40,30 @@
 }
 ```
 2. Create Access Key:
-> 1. Sign in to the AWS Management Console and open the IAM console at https://console.aws.amazon.com/iam/.
->
-> 2. In the navigation pane, choose Users.
->
-> 3. Choose the name of the user whose access keys you want to create, and then choose the Security credentials tab.
->
-> 4. In the Access keys section, choose Create access key.
->
-> 5. To view the new access key pair, choose Show. You will not have access to the secret access key again after this dialog box closes. Your credentials will look something like this:
->
-> - Access key ID: AKIAIOSFODNN7EXAMPLE
-> - Secret access key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+```
+ 1. Sign in to the AWS Management Console and open the IAM console at https://console.aws.amazon.com/iam/.
+
+ 2. In the navigation pane, choose Users.
+
+ 3. Choose the name of the user whose access keys you want to create, and then choose the Security credentials tab.
+
+ 4. In the Access keys section, choose Create access key.
+
+ 5. To view the new access key pair, choose Show. You will not have access to the secret access key again after this dialog box closes. Your credentials will look something like this:
+
+    - Access key ID: AKIAIOSFODNN7EXAMPLE
+    - Secret access key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```
 
 3. AWS CLI, [installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-methods) with Access Key.
 
  ```bash
  $ aws configure
- AWS Access Key ID [****************EF66]: 
- AWS Secret Access Key [****************Fzna]: 
- Default region name [eu-central-1]:
- Default output format [json]:
+   AWS Access Key ID [****************EF66]: 
+   AWS Secret Access Key [****************Fzna]: 
+   Default region name [eu-central-1]:
+   Default output format [json]:
 ```
 4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
 5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
