@@ -1,2 +1,2 @@
-project_id = "memphis-sandbox-353910"
+project_id = "CHANGE-ME"
 region     = "europe-west1"
