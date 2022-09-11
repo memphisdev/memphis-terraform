@@ -1,25 +1,27 @@
 <div align="center">
   
-  ![Memphis light logo](https://github.com/memphisdev/memphis-broker/blob/master/logo-white.png?raw=true#gh-dark-mode-only)
+  <img src="https://user-images.githubusercontent.com/70286779/189521560-7cb9bc32-1f2e-4974-bf10-c5c8bc52cf2f.jpeg">
   
 </div>
 
-<div align="center">
-  
-  ![Memphis light logo](https://github.com/memphisdev/memphis-broker/blob/master/logo-black.png?raw=true#gh-light-mode-only)
-  
-</div>
+# Deploy Memphis cluster on AWS
 
-<div align="center">
-<h1>A powerful messaging platform for modern developers</h1>
-</div>
+### Introduction
 
-## Memphis Deployment on AWS EKS
+[_**Amazon Web Services**_](https://aws.amazon.com/), one of the world's three most popular cloud providers, offers reliable and scalable cloud computing services. Free to join. Pay only for what you use.
 
-### Installation
+At the moment, memphis utilizing [Terraform](https://www.terraform.io/) to automate the entire deployment process from VPC creation, to K8S, to memphis deployment.
 
-#### Prerequisites
-1. Make sure your machine is connected with [AWS Account](https://portal.aws.amazon.com/billing/signup?nc2=h_ct&src=default&redirect_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start) using an AWS IAM User which has access to create resources(VPC,EC2,EKS). For fast forward configuration create and use the following policy:
+Terraform codifies cloud APIs into declarative configuration files.
+
+### Prerequisites
+
+* [AWS account](https://aws.amazon.com/free/)
+* AWS CLI [installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-configure.html)
+* Make sure your local station is connected with [AWS Account](https://portal.aws.amazon.com/billing/signup?nc2=h\_ct\&src=default\&redirect\_url=https%3A%2F%2Faws.amazon.com%2Fregistration-confirmation#/start) using an AWS IAM user which has access to create resources (EKS, VPC, EC2)
+
+IAM Policy to use -
+
 ```json
 {
     "Version": "2012-10-17",
@@ -39,72 +41,70 @@
     ]
 }
 ```
-2. Create Access Key:
 
-```
- 1. Sign in to the AWS Management Console and open the IAM console at https://console.aws.amazon.com/iam/.
+How to configure AWS CLI -
 
- 2. In the navigation pane, choose Users.
-
- 3. Choose the name of the user whose access keys you want to create, and then choose the Security credentials tab.
-
- 4. In the Access keys section, choose Create access key.
-
- 5. To view the new access key pair, choose Show. You will not have access to the secret access key again after this dialog box closes. Your credentials will look something like this:
-
-    - Access key ID: AKIAIOSFODNN7EXAMPLE
-    - Secret access key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+```bash
+$ aws configure
+  AWS Access Key ID [****************EF66]: 
+  AWS Secret Access Key [****************Fzna]: 
+  Default region name [eu-central-1]:
+  Default output format [json]:
 ```
 
-3. AWS CLI, [installed](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) and [configured](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html#cli-configure-files-methods) with Access Key.
+* Terraform is [installed](https://www.terraform.io/downloads)
+* Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* helm is [installed](https://helm.sh/docs/intro/install/)
 
- ```bash
- $ aws configure
-   AWS Access Key ID [****************EF66]: 
-   AWS Secret Access Key [****************Fzna]: 
-   Default region name [eu-central-1]:
-   Default output format [json]:
+### Terraform Installation Flow
+
+![aws memphis terraform](https://user-images.githubusercontent.com/70286779/189521945-6b6fdb66-fbdf-4b14-bfcb-5453d77bf9d4.png)
+
+### Step 0: Clone Memphis-Terraform repo
+
 ```
-4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
-5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-6. helm is [installed](https://helm.sh/docs/intro/install/)
- 
-#### Steps
-0. Change default variables if necessary in *variables.tf* file.(region,cidr and etc')
+git clone git@github.com:memphisdev/memphis-terraform.git && \
+cd memphis-terraform/AWS/EKS
+```
 
-1. Deploy EKS Cluster including:
-  - VPC with 2 public + 2 private networks
-  - 3 node fully functional EKS cluster based on **t3.large** instances with EBS,ELB resources.
+### Step 1: Deploy EKS Cluster using Terraform
 
 ```bash
 make infra
 ```
 
-2. Deploy Memphis App. Once deployment is complete. You can find Application Load Balancer URL.
+Instead of running three terraform commands
+
+### Step 2: Deploy Memphis
+
 ```bash
 make app
 ```
 
-**You can view status of load balancer from AWS Account EC2->Load Balancers once its stats is active. You can hit the URL to view Memphis UI**
+Once deployment is complete, the Application Load Balancer URL **** will be revealed.
 
-3. Login Details for root user
-```bash
-kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
+### Step 3: Login to Memphis
+
+Display memphis load balancer public IP by running the following -
+
+```
+kubectl get svc -n memphis
 ```
 
-4. Destroy Memphis App + EKS Cluster
-```bash
-make destroy
-```
+The UI will be available through **https://\<Public IP>:9000**
 
-5. Destroy Memphis App.
+### Appendix A: Clean (Remove) Memphis Terraform deployment
+
+Destroy Memphis App -&#x20;
+
 ```bash
 make destroyapp
 ```
 
-**Wait for ALB to be deleted from AWS Console**
+**It might take a few minutes for the ELB to be deleted.**
 
-5. Destroy Memphis EKS Cluster.
+Destroy Memphis EKS Cluster -&#x20;
+
 ```bash
 make destroyinfra
 ```
