@@ -42,7 +42,7 @@ Utilizing NATS core.
 </div>
 
 ### Memphis on AWS
-1. EKS (Amazon Elastic Kubernetes Service).   -   [Click Here](AWS/EKS/README.md)
+1. [EKS (Amazon Elastic Kubernetes Service)](AWS/EKS/README.md)
 
 ### Memphis on GCP
-1. GKE (Google Kubernetes Engine).            -   [Click Here](GCP/GKE/README.md)
+1. [GKE (Google Kubernetes Engine)](GCP/GKE/README.md)
