@@ -1,64 +1,80 @@
 <div align="center">
   
-  ![Memphis light logo](https://github.com/memphisdev/memphis-broker/blob/master/logo-white.png?raw=true#gh-dark-mode-only)
+  <img src="https://user-images.githubusercontent.com/70286779/189522030-e9d19313-dea0-4223-8f91-3842610abd27.jpeg">
   
 </div>
 
-<div align="center">
-  
-  ![Memphis light logo](https://github.com/memphisdev/memphis-broker/blob/master/logo-black.png?raw=true#gh-light-mode-only)
-  
-</div>
+# Deploy Memphis cluster on GCP
 
-<div align="center">
-<h1>A powerful messaging platform for modern developers</h1>
-</div>
+[Google Cloud Platform](https://cloud.google.com/) is one of the world's three most popular cloud providers. It offers a high-performance infrastructure for cloud computing, data analytics & machine learning. Secure, reliable, and high-performance cloud services.
 
-## Memphis Deployment on GCP GKE
+At the moment, memphis utilizing [Terraform](https://www.terraform.io/) to automate the entire deployment process from VPC creation, to K8S, to memphis deployment.
 
-### Installation
+Terraform codifies cloud APIs into declarative configuration files.
 
-#### Prerequisites
-1. Make sure your machine is connected with [GCP Account](https://console.cloud.google.com/)
-2. [GCP Project](https://console.cloud.google.com/projectcreate) + GCP [Service Account Key](https://console.cloud.google.com/apis/credentials/serviceaccountkey)
-3. gcloud SDK + CLI [installed](https://cloud.google.com/sdk/docs/quickstarts), configuration depends on machine OS.
-4. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
-5. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
-6. helm is [installed](https://helm.sh/docs/intro/install/)
+### Prerequisites
 
-#### Steps
-0. Change projectID variable in *terraform.tfvars* file.
+1. A [GCP Account](https://console.cloud.google.com/)
+2. Your local station is connected with your [GCP Account](https://console.cloud.google.com/)
+3. A [GCP Project](https://console.cloud.google.com/projectcreate) + GCP [Service Account Key](https://console.cloud.google.com/apis/credentials/serviceaccountkey)
+4. gcloud SDK + CLI [installed](https://cloud.google.com/sdk/docs/quickstarts), configuration depends on station OS.
+5. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
+6. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+7. helm is [installed](https://helm.sh/docs/intro/install/)
 
-1. Deploy GKE Cluster including:
-  - VPC
-  - 3 node fully functional GKE cluster based on **n2-standard-4** instances.
+### Terraform Installation Flow
+
+![gcp memphis terraform](https://user-images.githubusercontent.com/70286779/189522125-ae1bd8ed-7273-400f-ab56-d84bba39407f.png)
+
+### Step 0: Clone Memphis-Terraform repo
+
+```
+git clone git@github.com:memphisdev/memphis-terraform.git && \
+cd memphis-terraform/GCP/GKE
+```
+
+### Step 1: Define GCP project-id
+
+Change `projectID` variable in _`terraform.tfvars`_ file.
+
+### Step 2: Deploy GKE Cluster using Terraform
+
 ```bash
 make infra
 ```
 
-2. Deploy Memphis App. Once deployment is complete. You can find Application Load Balancer IP address and copy it to browser.
+Instead of running three terraform commands
+
+### Step 3: Deploy Memphis
+
 ```bash
 make app
 ```
 
-**The external IP allocation can take up to 2 minutes depending on the infrastructure**
+Once deployment is complete, the Application Load Balancer URL **** will be revealed.
 
-3. Login Details for root user
-```bash
-kubectl get secret memphis-creds -n memphis -o jsonpath="{.data.ROOT_PASSWORD}" | base64 --decode
+### Step 3: Login to Memphis
+
+Display memphis load balancer public IP by running the following -
+
 ```
-4. Destroy Memphis App + GKE Cluster
-```bash
-make destroy
+kubectl get svc -n memphis
 ```
 
-5. Destroy Memphis App.
+The UI will be available through **https://\<Public IP>:9000**
+
+### Appendix A: Clean (Remove) Memphis Terraform deployment
+
+Destroy Memphis App -&#x20;
+
 ```bash
 make destroyapp
 ```
 
-5. Destroy Memphis GKE Cluster.
+**It might take a few minutes for the ALB to be deleted.**
+
+Destroy Memphis GKE Cluster -&#x20;
+
 ```bash
 make destroyinfra
 ```
-
