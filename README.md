@@ -38,7 +38,7 @@ Utilizing NATS core.
 
 <div align="center">
 <h1>Getting Started</h1>
-<h3>Deploy Memphis.dev on cloud using Terraform</h3>
+<h3>Deploy Memphis cluster over a cloud provider using Terraform</h3>
 </div>
 
 ### Memphis on AWS
