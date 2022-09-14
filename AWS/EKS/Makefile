@@ -12,8 +12,8 @@ info:
 infra:
 
 	@terraform init
-	@terraform plan
-	@terraform apply
+	@terraform plan -out=tfplan
+	@terraform apply tfplan
 
 app:
 
@@ -22,8 +22,8 @@ app:
 
 allinone:
 	@terraform init
-	@terraform plan
-	@terraform apply
+	@terraform plan -out=tfplan
+	@terraform apply tfplan
 	@echo "Deploying Memphis to EKS"
 	./memphis-install.sh
 
