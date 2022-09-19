@@ -2,12 +2,12 @@
 
 info:
 
-	@echo "infra - to create a EKS cluster."
-	@echo "app - to deploy Memphis into EKS Cluster"
-	@echo "allinone - to deploy Eks cluster with Memphis"
-	@echo "destroy - to destroy Memphis and EKS Cluster"
+	@echo "infra - to create a GKE cluster."
+	@echo "app - to deploy Memphis into GKE Cluster"
+	@echo "allinone - to deploy GKE cluster with Memphis"
+	@echo "destroy - to destroy Memphis and GKE Cluster"
 	@echo "destroyapp - to destroy Memphis"
-	@echo "destroyinfra - to destroy Memphis EKS Cluster"
+	@echo "destroyinfra - to destroy Memphis GKE Cluster"
 
 infra:
 
@@ -17,25 +17,25 @@ infra:
 
 app:
 
-	@echo "Deploying Memphis to EKS"
+	@echo "Deploying Memphis to GKE"
 	./memphis-install.sh
 
 allinone:
 	@terraform init
 	@terraform plan -out=tfplan
 	@terraform apply tfplan
-	@echo "Deploying Memphis to EKS"
+	@echo "Deploying Memphis to GKE"
 	./memphis-install.sh
 
 destroy:
-	@echo "Destroy Memphis+EKS"
+	@echo "Destroy Memphis+GKE"
 	./memphis-uninstall.sh
 	@terraform destroy
-	
+
 destroyapp:
 	@echo "Destroy Memphis"
 	./memphis-uninstall.sh
 
 destroyinfra:
-	@echo "Destroy EKS"
+	@echo "Destroy GKE"
 	@terraform destroy   
