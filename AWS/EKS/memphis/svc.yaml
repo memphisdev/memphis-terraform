@@ -12,6 +12,6 @@ spec:
     port: 6666
     targetPort: 6666  
   selector:
-    app.kubernetes.io/instance: my-memphis
+    app.kubernetes.io/instance: memphis
     app.kubernetes.io/name: memphis
   type: LoadBalancer
