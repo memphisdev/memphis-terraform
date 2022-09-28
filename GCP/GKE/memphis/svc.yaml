@@ -1,13 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: memphis-ui
+  name: memphis-cluster-external
   namespace: memphis
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 80
+  - name: memphis-cp
+    port: 9000
+    targetPort: 9000
+  - name: memphis-cp-tcp
+    port: 6666
+    targetPort: 6666  
   selector:
-    app: memphis-ui
+    app.kubernetes.io/instance: memphis
+    app.kubernetes.io/name: memphis
   type: LoadBalancer
