@@ -1,9 +1,12 @@
 # Local .terraform directories
 **/.terraform/*
+*.tfvars.json
 
 # .tfstate files
 *.tfstate
 *.tfstate.*
+tfplan
+*.tfplan
 
 # Crash log files
 crash.log
@@ -28,3 +31,6 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 kubeconfig-*
+
+values.*.yaml
+

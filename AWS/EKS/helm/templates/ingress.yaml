@@ -1,0 +1,19 @@
+{{- if eq "alb" .Values.loadbalancer }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: memphis{{ .Values.environment }}
+  name: memphis-ui
+  annotations:
+    {{- if .Values.externalType }}
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    {{- end }}
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+spec:
+  defaultBackend:
+    service:
+      name: memphis-ui
+      port:
+        number: 80
+{{- end }}

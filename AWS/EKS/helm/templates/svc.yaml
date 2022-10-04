@@ -1,0 +1,21 @@
+{{- if eq "nlb" .Values.loadbalancer }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: memphis-ui-lb
+  namespace: memphis{{ .Values.environment }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    {{- if .Values.externalType }}
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    {{- end }}
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: memphis-ui
+  type: LoadBalancer
+{{- end }}

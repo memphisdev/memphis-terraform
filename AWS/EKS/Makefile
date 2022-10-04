@@ -18,23 +18,23 @@ infra:
 app:
 
 	@echo "Deploying Memphis to EKS"
-	./memphis-install.sh
+	./memphis-install.sh basic
 
 allinone:
 	@terraform init
 	@terraform plan -out=tfplan
 	@terraform apply tfplan
 	@echo "Deploying Memphis to EKS"
-	./memphis-install.sh
+	./memphis-install.sh basic
 
 destroy:
 	@echo "Destroy Memphis+EKS"
-	./memphis-uninstall.sh
+	./memphis-uninstall.sh basic
 	@terraform destroy
 	
 destroyapp:
 	@echo "Destroy Memphis"
-	./memphis-uninstall.sh
+	./memphis-uninstall.sh basic
 
 destroyinfra:
 	@echo "Destroy EKS"
