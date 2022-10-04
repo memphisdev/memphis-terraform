@@ -1,6 +1,6 @@
 1. Get the Memphis application URL by running these commands:
 {{- if eq "alb" .Values.loadbalancer }}
-export SERVICE_IP=$(kubectl get svc --namespace memphis{{ .Values.environment }} memphis-ui-lb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+export SERVICE_IP=$(kubectl get ingress --namespace memphis{{ .Values.environment }} memphis-ui-lb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
 echo http://$SERVICE_IP
 {{- else if eq "nlb" .Values.loadbalancer }}
      NOTE: It may take a few minutes for the LoadBalancer IP to be available.

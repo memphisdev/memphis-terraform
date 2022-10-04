@@ -2,9 +2,11 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/AlecAivazis/survey/v2"
 	"gopkg.in/yaml.v2"
@@ -76,7 +78,7 @@ var awsQs = []*survey.Question{
 		Prompt: &survey.Input{
 			Message: "Enter your preffered region:",
 			Help:    "An example- For AWS: eu-central-1 , For GCP: europe-west1 etc ",
-			Default: "ap-southeast-2",
+			Default: "eu-central-1",
 		},
 		Validate: survey.Required,
 	},
@@ -130,14 +132,15 @@ func main() {
 	args := os.Args[1:]
 	if len(args) == 1 && args[0] == "help" {
 		fmt.Println(Warn("Supported Args: <help|init|apply|destroy>"))
-		fmt.Println(Warn("An example: go run main.go init"))
+		fmt.Println(Warn("No Args will start into interactive mode."))
 		return
-	} else {
-		if len(args) != 1 {
-			fmt.Println(Fata("Please enter correct inputs. Type help for more details abt inputs."))
-			return
-		}
 	}
+	// } else {
+	// 	if len(args) != 1 {
+	// 		fmt.Println(Fata("Please enter correct inputs. Type help for more details abt inputs."))
+	// 		return
+	// 	}
+	// }
 
 	cp_prompt := &survey.Select{
 		Message: "Choose your preferred cloud provider:",
@@ -161,39 +164,86 @@ func main() {
 	}
 
 	fmt.Println(Info("Thanks..Progressing with Public Cloud Provider - ", cloudprovider))
-	action := args[0]
+	tfinputfilename := fmt.Sprintf("%s-%s.tfvars.json", "aws", environment)
+	helminputfilename := fmt.Sprintf("values.%s%s.yaml", "aws", environment)
+	var action string
+	if len(args) == 1 {
+		action = args[0]
+	}
 	switch action {
 	case "init":
-		if err := memphistfInit(cloudprovider, environment); err != nil {
+		if err := memphisInit(cloudprovider, environment, tfinputfilename, helminputfilename); err != nil {
 			fmt.Println(Fata(err))
 			return
 		}
 	case "apply":
-		memphistfApply(cloudprovider, environment)
+		if err := memphisApply(cloudprovider, environment); err != nil {
+			fmt.Println(Fata(err))
+			return
+		}
 	case "destroy":
-		memphistfDestroy()
+		if err := memphisDestroy(cloudprovider, environment, tfinputfilename); err != nil {
+			fmt.Println(Fata(err))
+			return
+		}
 	default:
-		fmt.Println(Fata("Unsupported argument passed. Type help for more details abt inputs."))
+		//fmt.Println(Fata("Unsupported argument passed. Type help for more details abt inputs."))
+		if err := memphisInit(cloudprovider, environment, tfinputfilename, helminputfilename); err != nil {
+			fmt.Println(Fata(err))
+			return
+		}
+		var proceed bool
+		proceedConf := &survey.Confirm{
+			Message: "Do you want to proceed with above plan for deployment ?",
+		}
+		err := survey.AskOne(proceedConf, &proceed)
+		if err != nil {
+			return
+		}
+		if proceed {
+			if err := memphisApply(cloudprovider, environment); err != nil {
+				fmt.Println(Fata(err))
+				return
+			}
+		}
+
 	}
 }
 
-func memphistfInit(cloudprovider string, environment string) error {
-	var inputfilename string
-	var tfWorkDir string
-	switch cloudprovider {
-	case "aws":
-		filename, err := handleaws(environment)
-		if err != nil {
-			return err
+func memphisInit(cloudprovider string, environment string, tfinputfilename string, helminputfilename string) error {
+	//var inputfilename string
+	var tfWorkDir = ExecutionPath(cloudprovider)
+	var isAutoLoad bool
+	// Checking if input files already exist.
+	_, err := os.Stat(tfinputfilename)
+	if !errors.Is(err, os.ErrNotExist) {
+		_, err = os.Stat(helminputfilename)
+		if !errors.Is(err, os.ErrNotExist) {
+			autoload := &survey.Confirm{
+				Message: "Input files already exist. Do you want to proceed with them ?",
+			}
+			err := survey.AskOne(autoload, &isAutoLoad)
+			if err != nil {
+				return err
+			}
 		}
-		tfWorkDir = ExecutionPath(cloudprovider)
-		inputfilename = filename
-	case "gcp":
-		fmt.Println("This is not supported.")
-	case "azure":
-		fmt.Println("This is not supported.")
 	}
-	fmt.Println(Info("Thanks for inputs. Running Terraform..."))
+	if !isAutoLoad {
+		switch cloudprovider {
+		case "aws":
+			err := handleaws(environment, tfinputfilename, helminputfilename)
+			if err != nil {
+				return err
+			}
+			fmt.Println(Info("Thanks for inputs."))
+		case "gcp":
+			fmt.Println("This is not supported.")
+		case "azure":
+			fmt.Println("This is not supported.")
+		}
+	}
+
+	fmt.Println(Info("Running Terraform..."))
 	tfExecPath, err := exec.LookPath("terraform")
 	if err != nil {
 		//fmt.Println(Fata(err.Error()))
@@ -217,7 +267,7 @@ func memphistfInit(cloudprovider string, environment string) error {
 	tfplanoutput := fmt.Sprintf("-out=%s%s.tfplan", cloudprovider, environment)
 	cmdtfplan := &exec.Cmd{
 		Path:   tfExecPath,
-		Args:   []string{tfExecPath, "plan", fmt.Sprintf("-var-file=../../%s", inputfilename), tfplanoutput, "-input=false"},
+		Args:   []string{tfExecPath, "plan", fmt.Sprintf("-var-file=../../%s", tfinputfilename), tfplanoutput, "-input=false"},
 		Dir:    tfWorkDir,
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
@@ -235,7 +285,7 @@ func memphistfInit(cloudprovider string, environment string) error {
 
 }
 
-func memphistfApply(cloudprovider string, environment string) error {
+func memphisApply(cloudprovider string, environment string) error {
 	tfWorkDir := ExecutionPath(cloudprovider)
 	tfExecPath, err := exec.LookPath("terraform")
 	if err != nil {
@@ -253,29 +303,20 @@ func memphistfApply(cloudprovider string, environment string) error {
 	fmt.Println(cmdtfapply.String())
 	//Running Terraform Plan
 	fmt.Println(Info("Applying generated terraform plan..."))
-	/*
-		if err := cmdtfapply.Run(); err != nil {
-			//fmt.Println(Fata("Terraform Apply Error:", err))
-			err := fmt.Errorf("terraform apply error:%s", err.Error())
-			return err
-		}
-	*/
-	//fmt.Println(Info("Sleeping for 2 minutes to make sure infrastructure is ready"))
-	//time.Sleep(120 * time.Second)
-	fmt.Println(Info("Deploying Memphis Application..."))
-	//installscript := fmt.Sprintf("%s/memphis-install.sh", tfWorkDir)
 
-	/* out, err := exec.Command("/bin/sh", installscript, environment).Output()
-	if err != nil {
-		err := fmt.Errorf("memphis deployment error:%s", err.Error())
+	if err := cmdtfapply.Run(); err != nil {
+		//fmt.Println(Fata("Terraform Apply Error:", err))
+		err := fmt.Errorf("terraform apply error:%s", err.Error())
 		return err
 	}
-	fmt.Println(out) */
+
+	fmt.Println(Info("Sleeping for 2 minutes to make sure infrastructure is ready"))
+	time.Sleep(120 * time.Second)
+	fmt.Println(Info("Deploying Memphis Application..."))
 	shellExecPath, err := exec.LookPath("sh")
 	if err != nil {
 		return err
 	}
-
 	memphisdep := &exec.Cmd{
 		Path:   shellExecPath,
 		Args:   []string{shellExecPath, "memphis-install.sh", environment},
@@ -285,7 +326,6 @@ func memphistfApply(cloudprovider string, environment string) error {
 	}
 
 	if err := memphisdep.Run(); err != nil {
-		//fmt.Println(Fata("Terraform Apply Error:", err))
 		err := fmt.Errorf("memphis Deployment error:%s", err.Error())
 		return err
 	}
@@ -293,11 +333,53 @@ func memphistfApply(cloudprovider string, environment string) error {
 	return nil
 }
 
-func memphistfDestroy() error {
+func memphisDestroy(cloudprovider string, environment string, tfinputfilename string) error {
+	tfWorkDir := ExecutionPath(cloudprovider)
+	fmt.Println(Info("Destroying Memphis Application..."))
+	shellExecPath, err := exec.LookPath("sh")
+	if err != nil {
+		return err
+	}
+	memphisdep := &exec.Cmd{
+		Path:   shellExecPath,
+		Args:   []string{shellExecPath, "memphis-uninstall.sh", environment},
+		Dir:    tfWorkDir,
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+	}
+
+	if err := memphisdep.Run(); err != nil {
+		err := fmt.Errorf("memphis destroy error:%s", err.Error())
+		return err
+	}
+	fmt.Println(Info("Sleeping for 2 minutes to make sure ELB is removed."))
+	time.Sleep(120 * time.Second)
+	tfExecPath, err := exec.LookPath("terraform")
+	if err != nil {
+		return err
+	}
+	cmdtfdestroy := &exec.Cmd{
+		Path:   tfExecPath,
+		Args:   []string{tfExecPath, "destroy", fmt.Sprintf("-var-file=../../%s", tfinputfilename), "-auto-approve", "-input=false"},
+		Dir:    tfWorkDir,
+		Stdout: os.Stdout,
+		Stderr: os.Stdout,
+	}
+
+	fmt.Println(cmdtfdestroy.String())
+	//Running Terraform Plan
+	fmt.Println(Info("Destroying memphis infrastructure..."))
+
+	if err := cmdtfdestroy.Run(); err != nil {
+		//fmt.Println(Fata("Terraform Apply Error:", err))
+		err := fmt.Errorf("terraform destroy error:%s", err.Error())
+		return err
+	}
+
 	return nil
 }
 
-func handleaws(env string) (string, error) {
+func handleaws(env string, tfinputfilename string, helminputfilename string) error {
 	awstfinputs := Awstfinputs{}
 	awsekshelminputs := Awsekshelminputs{}
 	awsekshelminputs.Environment = env
@@ -306,32 +388,30 @@ func handleaws(env string) (string, error) {
 	err := survey.Ask(awsQs, &awstfinputs)
 	if err != nil {
 		//fmt.Println(err.Error())
-		return "", err
+		return err
 	}
 	err = survey.Ask(awsEKSHemlQs, &awsekshelminputs)
 	if err != nil {
 		//fmt.Println(err.Error())
-		return "", err
+		return err
 	}
 	//fmt.Println(awstfinputs)
 	tfinputjson, _ := json.MarshalIndent(awstfinputs, "", " ")
-	tfinputfilename := fmt.Sprintf("%s-%s.tfvars.json", "aws", env)
 	err = os.WriteFile(tfinputfilename, tfinputjson, 0644)
 	if err != nil {
 		//fmt.Println(err.Error())
-		return "", err
+		return err
 	}
 
 	helminputjson, err := yaml.Marshal(&awsekshelminputs)
 
 	if err != nil {
-		return "", err
+		return err
 	}
-	yamlinputfilename := fmt.Sprintf("values.%s%s.yaml", "aws", env)
-	err = os.WriteFile(yamlinputfilename, helminputjson, 0644)
+	err = os.WriteFile(helminputfilename, helminputjson, 0644)
 	if err != nil {
 		//fmt.Println(err.Error())
-		return "", err
+		return err
 	}
-	return tfinputfilename, nil
+	return nil
 }

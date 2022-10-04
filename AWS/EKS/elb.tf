@@ -13,6 +13,9 @@ module "alb_controller_irsa_role" {
 }
 
 resource "kubernetes_service_account" "alb-service-account" {
+  depends_on = [
+    module.eks
+  ]
   metadata {
     name      = "aws-load-balancer-controller"
     namespace = "kube-system"

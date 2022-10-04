@@ -15,6 +15,9 @@ module "ebs_csi_irsa_role" {
 }
 
 resource "kubernetes_service_account" "ebscsi-service-account" {
+  depends_on = [
+    module.eks
+  ]
   metadata {
     name      = "ebs-csi-controller-sa"
     namespace = "kube-system"
