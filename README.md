@@ -41,6 +41,12 @@ Utilizing NATS core.
 <h3>Deploy Memphis cluster over a cloud provider using Terraform</h3>
 </div>
 
+### Interactive Memphis Installation
+```
+git clone git@github.com:memphisdev/memphis-terraform.git && \
+go run main.go
+```
+
 ### Memphis on AWS
 1. [EKS (Amazon Elastic Kubernetes Service)](AWS/EKS/README.md)
 
