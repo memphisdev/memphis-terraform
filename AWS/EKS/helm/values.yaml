@@ -4,3 +4,6 @@
 environment: ""
 loadbalancer: nlb
 externalType: true
+memphis:
+  ui-port: 9000
+  sdk-port: 6666

@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   namespace: memphis{{ .Values.environment }}
-  name: memphis-ui-lb
+  name: memphis-ui-alb
   annotations:
     {{- if .Values.externalType }}
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -13,7 +13,7 @@ metadata:
 spec:
   defaultBackend:
     service:
-      name: memphis-ui
+      name: memphis-cluster
       port:
-        number: 80
+        number: {{ .Values.memphis.ui-port }}
 {{- end }}

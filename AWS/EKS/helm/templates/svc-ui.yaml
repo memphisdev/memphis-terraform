@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: memphis-ui-lb
+  name: memphis-ui-nlb
   namespace: memphis{{ .Values.environment }}
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-type: "external"
@@ -14,8 +14,9 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 80
+    targetPort: {{ .Values.memphis.ui-port }}
   selector:
-    app: memphis-ui
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: memphis
   type: LoadBalancer
 {{- end }}

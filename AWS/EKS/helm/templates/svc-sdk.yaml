@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: memphis-sdk-nlb
+  namespace: memphis{{ .Values.environment }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    {{- if .Values.externalType }}
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    {{- end }}
+spec:
+  ports:
+  - port: {{ .Values.memphis.sdk-port }}
+    protocol: TCP
+    targetPort: {{ .Values.memphis.sdk-port }}
+  selector:
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: memphis
+  type: LoadBalancer
