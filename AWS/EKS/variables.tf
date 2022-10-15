@@ -29,3 +29,14 @@ variable "eksalb_addon_registryaccount" {
   default     = "602401143452"
 }
 
+variable "enable_dns" {
+  type = bool
+  description = "To enable DNS using Route53"
+  default = false
+}
+
+variable "hostedzonename" {
+  description = "AWS Route53 Hosted Zone Name"
+  type = string
+  default = ""
+}

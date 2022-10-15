@@ -14,12 +14,11 @@ spec:
   {{- if eq "nlb" .Values.loadbalancer }}
   - port: 80
     protocol: TCP
-    targetPort: {{ .Values.memphis.ui-port }}
+    targetPort: {{ .Values.memphis.uiport }}
   {{- end }}
-  - port: {{ .Values.memphis.sdk-port }}
+  - port: {{ .Values.memphis.sdkport }}
     protocol: TCP
-    targetPort: {{ .Values.memphis.sdk-port }}
+    targetPort: {{ .Values.memphis.sdkport }}
   selector:
-    app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/name: memphis
   type: LoadBalancer

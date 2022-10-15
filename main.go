@@ -63,12 +63,15 @@ type Awstfinputs struct {
 	Application                string `json:"application"`
 	Vpccidr                    string `json:"vpc_cidr"`
 	Eksalbaddonregistryaccount string `json:"eksalb_addon_registryaccount"`
+	Enabledns                  bool   `json:"enable_dns"`
+	Hostedzonename             string `json:"hostedzonename"`
 }
 
 type Awsekshelminputs struct {
 	Environment  string `yaml:"environment"`
 	Loadbalancer string `yaml:"loadbalancer"`
 	Externaltype bool   `yaml:"externalType"`
+	Hostname     string `yaml:"hostname"`
 }
 
 // the questions to ask for AWS
@@ -104,6 +107,13 @@ var awsQs = []*survey.Question{
 			Default: "602401143452",
 		},
 	},
+	{
+		Name: "hostedzonename",
+		Prompt: &survey.Input{
+			Message: "Please provide hosted zone name(Enter to skip)",
+			Help:    "Route53 Hosted Zone name to attach load balancer.",
+		},
+	},
 }
 
 var awsEKSHemlQs = []*survey.Question{
@@ -119,6 +129,14 @@ var awsEKSHemlQs = []*survey.Question{
 		Name: "externaltype",
 		Prompt: &survey.Confirm{
 			Message: "Do you want to expose Memphis UI to external(public)?",
+		},
+	},
+	{
+		Name: "hostname",
+		Prompt: &survey.Input{
+			Message: "Please provide hostname prefix(Enter to skip if hosted zone NOT provided)",
+			Help:    "It will be added DNS Prefix for privided Hosted Zone Name.",
+			Default: "memphis",
 		},
 	},
 }
@@ -396,6 +414,20 @@ func handleaws(env string, tfinputfilename string, helminputfilename string) err
 		return err
 	}
 	//fmt.Println(awstfinputs)
+	//Setting up Enable DNS based on hostname input.
+	if awstfinputs.Hostedzonename == "" {
+		awstfinputs.Enabledns = false
+	} else {
+		awstfinputs.Enabledns = true
+	}
+	//Setting up Hostname for Helm input.
+	if awstfinputs.Enabledns {
+		awsekshelminputs.Hostname = fmt.Sprintf("%s.%s.%s", awsekshelminputs.Hostname, env, awstfinputs.Hostedzonename)
+	} else {
+		awsekshelminputs.Hostname = ""
+	}
+
+	//Writing inputs into Json and Yaml files.
 	tfinputjson, _ := json.MarshalIndent(awstfinputs, "", " ")
 	err = os.WriteFile(tfinputfilename, tfinputjson, 0644)
 	if err != nil {

@@ -2,8 +2,12 @@
 {{- if eq "alb" .Values.loadbalancer }}
      NOTE: It may take a few minutes for the LoadBalancer DNS to be available.
            You can watch the status of by running 'kubectl get --namespace memphis{{ .Values.environment }} ingress -w memphis-ui-alb'
-export ALB_DNS=$(kubectl get ingress --namespace memphis{{ .Values.environment }} memphis-ui-alb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-echo http://$ALB_DNS
+{{- if .Values.hostname }}
+echo http://{{ .Values.hostname }}
+{{- else }}
+export UIDNS=$(kubectl get ingress --namespace memphis{{ .Values.environment }} memphis-ui-alb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+echo http://$UIDNS
+{{- end}}
 {{- else if eq "nlb" .Values.loadbalancer }}
      NOTE: It may take a few minutes for the LoadBalancer DNS to be available.
            You can watch the status of by running 'kubectl get --namespace memphis{{ .Values.environment }} svc -w memphis-nlb'
@@ -15,4 +19,4 @@ echo http://$ALB_DNS
            You can watch the status of by running 'kubectl get --namespace memphis{{ .Values.environment }} svc -w memphis-sdk-nlb'
   export NLB_DNS=$(kubectl get svc --namespace memphis{{ .Values.environment }} memphis-nlb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
   echo Host- $NLB_DNS
-  Port: {{ .Values.memphis.sdk-port }}
+  Port: {{ .Values.memphis.sdkport }}

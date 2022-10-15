@@ -11,9 +11,17 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
     kubernetes.io/ingress.class: alb
 spec:
-  defaultBackend:
-    service:
-      name: memphis-cluster
-      port:
-        number: {{ .Values.memphis.ui-port }}
+  rules:
+    - http:
+        paths:
+        - backend:
+            service:
+              name: memphis-cluster
+              port:
+                number: {{ .Values.memphis.uiport }}
+          path: /
+          pathType: Prefix
+      {{- if .Values.hostname }}
+      host: {{ .Values.hostname }}
+      {{- end }}
 {{- end }}
