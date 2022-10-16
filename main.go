@@ -72,6 +72,7 @@ type Awsekshelminputs struct {
 	Loadbalancer string `yaml:"loadbalancer"`
 	Externaltype bool   `yaml:"externalType"`
 	Hostname     string `yaml:"hostname"`
+	Hostnamesdk  string `yaml:"hostnamesdk"`
 }
 
 // the questions to ask for AWS
@@ -423,8 +424,10 @@ func handleaws(env string, tfinputfilename string, helminputfilename string) err
 	//Setting up Hostname for Helm input.
 	if awstfinputs.Enabledns {
 		awsekshelminputs.Hostname = fmt.Sprintf("%s.%s.%s", awsekshelminputs.Hostname, env, awstfinputs.Hostedzonename)
+		awsekshelminputs.Hostnamesdk = fmt.Sprintf("%ssdk.%s.%s", awsekshelminputs.Hostname, env, awstfinputs.Hostedzonename)
 	} else {
 		awsekshelminputs.Hostname = ""
+		awsekshelminputs.Hostnamesdk = ""
 	}
 
 	//Writing inputs into Json and Yaml files.

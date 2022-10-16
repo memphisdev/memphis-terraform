@@ -52,4 +52,8 @@ resource "helm_release" "eks-externaldns" {
     name  = "serviceAccount.name"
     value = "external-dns-controller-sa"
   }
+  set {
+    name  = "policy"
+    value = "sync"
+  }
 }

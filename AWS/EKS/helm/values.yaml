@@ -5,6 +5,7 @@ environment: ""
 loadbalancer: nlb
 externalType: true
 hostname: ""
+hostnamesdk: ""
 memphis:
   uiport: 9000
   sdkport: 6666
