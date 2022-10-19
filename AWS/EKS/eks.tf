@@ -26,9 +26,17 @@ module "eks" {
   eks_managed_node_groups = {
     managed_nodegrp = {
       desired_size   = 3
-      instance_types = ["t3.large"]
+      instance_types = ["i3en.large"]
       labels = {
         NodeGroupType = "managed_node_groups"
+        Environment   = var.environment
+      }
+    }
+    benchmark_nodegrp = {
+      desired_size   = 1
+      instance_types = ["m5n.8xlarge"]
+      labels = {
+        NodeGroupType = "benchmark_node_groups"
         Environment   = var.environment
       }
     }
