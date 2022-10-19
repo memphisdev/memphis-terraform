@@ -30,6 +30,7 @@ module "eks" {
       labels = {
         NodeGroupType = "managed_node_groups"
         Environment   = var.environment
+        App = "memphis"
       }
     }
     benchmark_nodegrp = {
@@ -38,6 +39,7 @@ module "eks" {
       labels = {
         NodeGroupType = "benchmark_node_groups"
         Environment   = var.environment
+        App = "memphis_benchmark"
       }
     }
   }
