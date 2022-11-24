@@ -32,6 +32,13 @@ allinone:
 	@echo "Deploying Memphis to EKS"
 	./memphis-install.sh
 
+cluster:
+	@terraform init
+	@terraform plan -out=tfplan
+	@terraform apply tfplan
+	@echo "Deploying Memphis Cluster to EKS"
+	./memphis-cluster-install.sh
+
 destroy:
 	@echo "Destroy Memphis+EKS"
 	./memphis-uninstall.sh
