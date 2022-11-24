@@ -4,6 +4,7 @@ info:
 
 	@echo "infra - to create a GKE cluster."
 	@echo "app - to deploy Memphis into GKE Cluster"
+	@echo "cluster - to deploy Memphis cluster into GKE Cluster"
 	@echo "allinone - to deploy GKE cluster with Memphis"
 	@echo "clusterallinone - to deploy GKE cluster with Memphis Cluster"
 	@echo "destroy - to destroy Memphis and GKE Cluster"
@@ -21,9 +22,9 @@ app:
 	@echo "Deploying Memphis to GKE"
 	./memphis-install.sh
 
-clusterapp:
+cluster:
 
-	@echo "Deploying Memphis to GKE"
+	@echo "Deploying Memphis cluster to GKE"
 	./memphis-cluster-install.sh
 
 allinone:

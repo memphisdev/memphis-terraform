@@ -3,7 +3,8 @@
 info:
 
 	@echo "infra - to create a EKS cluster."
-	@echo "app - to deploy Memphis into EKS Cluster"
+	@echo "app - to deploy standalone Memphis into EKS Cluster"
+	@echo "cluster - to deploy Memphis cluster into EKS Cluster"
 	@echo "allinone - to deploy EKS cluster with Memphis"
 	@echo "clusterallinone- to deploy EKS cluster with Memphis Cluster
 	@echo "destroy - to destroy Memphis and EKS Cluster"
@@ -21,9 +22,9 @@ app:
 	@echo "Deploying Memphis to EKS"
 	./memphis-install.sh
 
-clusterapp:
+cluster:
 
-	@echo "Deploying Memphis to EKS"
+	@echo "Deploying Memphis cluster to EKS"
 	./memphis-cluster-install.sh
 
 allinone:
