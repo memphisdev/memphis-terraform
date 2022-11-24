@@ -8,7 +8,7 @@ info:
 	@echo "allinone - to deploy GKE cluster with Memphis"
 	@echo "clusterallinone - to deploy GKE cluster with Memphis Cluster"
 	@echo "destroy - to destroy Memphis and GKE Cluster"
-	@echo "destroyapp - to destroy Memphis"
+	@echo "destroymemphis - to destroy Memphis"
 	@echo "destroyinfra - to destroy Memphis GKE Cluster"
 
 infra:
@@ -46,7 +46,7 @@ destroy:
 	./memphis-uninstall.sh
 	@terraform destroy
 
-destroyapp:
+destroymemphis:
 	@echo "Destroy Memphis"
 	./memphis-uninstall.sh
 

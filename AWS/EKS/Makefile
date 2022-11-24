@@ -6,9 +6,9 @@ info:
 	@echo "app - to deploy standalone Memphis into EKS Cluster"
 	@echo "cluster - to deploy Memphis cluster into EKS Cluster"
 	@echo "allinone - to deploy EKS cluster with Memphis"
-	@echo "clusterallinone- to deploy EKS cluster with Memphis Cluster
+	@echo "clusterallinone- to deploy EKS cluster with Memphis Cluster"
 	@echo "destroy - to destroy Memphis and EKS Cluster"
-	@echo "destroyapp - to destroy Memphis"
+	@echo "destroymemphis - to destroy Memphis"
 	@echo "destroyinfra - to destroy Memphis EKS Cluster"
 
 infra:
@@ -46,7 +46,7 @@ destroy:
 	./memphis-uninstall.sh
 	@terraform destroy
 	
-destroyapp:
+destroymemphis:
 	@echo "Destroy Memphis"
 	./memphis-uninstall.sh
 
