@@ -4,7 +4,8 @@ info:
 
 	@echo "infra - to create a EKS cluster."
 	@echo "app - to deploy Memphis into EKS Cluster"
-	@echo "allinone - to deploy Eks cluster with Memphis"
+	@echo "allinone - to deploy EKS cluster with Memphis"
+	@echo "clusterallinone- to deploy EKS cluster with Memphis Cluster
 	@echo "destroy - to destroy Memphis and EKS Cluster"
 	@echo "destroyapp - to destroy Memphis"
 	@echo "destroyinfra - to destroy Memphis EKS Cluster"
@@ -32,7 +33,7 @@ allinone:
 	@echo "Deploying Memphis to EKS"
 	./memphis-install.sh
 
-cluster:
+clusterallinone:
 	@terraform init
 	@terraform plan -out=tfplan
 	@terraform apply tfplan
