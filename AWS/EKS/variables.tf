@@ -6,7 +6,7 @@ variable "region" {
 variable "environment" {
   description = "EKS Cluster environment"
   type        = string
-  default     = "dev"
+  default     = "test"
 }
 
 variable "application" {

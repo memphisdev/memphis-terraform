@@ -11,7 +11,10 @@ spec:
   - name: memphis-cp-tcp
     port: 6666
     targetPort: 6666  
+  - name: memphis-ws
+    port: 7770
+    targetPort: 7770 
   selector:
-    app.kubernetes.io/instance: memphis
+    app.kubernetes.io/instance: my-memphis
     app.kubernetes.io/name: memphis
   type: LoadBalancer
