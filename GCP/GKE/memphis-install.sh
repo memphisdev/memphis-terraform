@@ -1,6 +1,6 @@
 gcloud container clusters get-credentials $(terraform output -raw kubernetes_cluster_name) --region $(terraform output -raw region)
 helm repo add memphis https://k8s.memphis.dev/charts/
-helm install my-memphis memphis/memphis --create-namespace --namespace memphis
+helm install my-memphis memphis/memphis --create-namespace --namespace memphis --wait
 kubectl apply -f memphis/svc.yaml
 until kubectl get svc memphis-cluster-external -o=jsonpath='{.status.loadBalancer.ingress[0].ip}' -n memphis| grep -q ""; do sleep 1; done
 echo ""

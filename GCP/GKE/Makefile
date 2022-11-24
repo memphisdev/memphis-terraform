@@ -20,6 +20,11 @@ app:
 	@echo "Deploying Memphis to GKE"
 	./memphis-install.sh
 
+clusterapp:
+
+	@echo "Deploying Memphis to GKE"
+	./memphis-cluster-install.sh
+
 allinone:
 	@terraform init
 	@terraform plan -out=tfplan
