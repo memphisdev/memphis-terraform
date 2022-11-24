@@ -37,7 +37,7 @@ cluster:
 	@terraform plan -out=tfplan
 	@terraform apply tfplan
 	@echo "Deploying Memphis Cluster to GKE"
-        ./memphis-cluster-install.sh
+	./memphis-cluster-install.sh
 
 destroy:
 	@echo "Destroy Memphis+GKE"
