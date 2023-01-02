@@ -6,6 +6,8 @@ loadbalancer: nlb
 externalType: true
 hostname: ""
 hostnamesdk: ""
+enablessl: false
+certificatearn: ""
 memphis:
   uiport: 9000
   sdkport: 6666

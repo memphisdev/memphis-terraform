@@ -65,6 +65,7 @@ type Awstfinputs struct {
 	Eksalbaddonregistryaccount string `json:"eksalb_addon_registryaccount"`
 	Enabledns                  bool   `json:"enable_dns"`
 	Hostedzonename             string `json:"hostedzonename"`
+	Enablessl                  bool   `json:"enable_ssl"`
 }
 
 type Awsekshelminputs struct {
@@ -73,6 +74,7 @@ type Awsekshelminputs struct {
 	Externaltype bool   `yaml:"externalType"`
 	Hostname     string `yaml:"hostname"`
 	Hostnamesdk  string `yaml:"hostnamesdk"`
+	Enablessl    bool   `yaml:""`
 }
 
 // the questions to ask for AWS
@@ -115,6 +117,13 @@ var awsQs = []*survey.Question{
 			Help:    "Route53 Hosted Zone name to attach load balancer.",
 		},
 	},
+	{
+		Name: "enablessl",
+		Prompt: &survey.Confirm{
+			Message: "Do you to HTTPS/SSL Encryption(Enter to skip if hosted zone not provided)?",
+			Default: false,
+		},
+	},
 }
 
 var awsEKSHemlQs = []*survey.Question{
@@ -132,14 +141,14 @@ var awsEKSHemlQs = []*survey.Question{
 			Message: "Do you want to expose Memphis UI to external(public)?",
 		},
 	},
-	{
-		Name: "hostname",
-		Prompt: &survey.Input{
-			Message: "Please provide hostname prefix(Enter to skip if hosted zone NOT provided)",
-			Help:    "It will be added DNS Prefix for privided Hosted Zone Name.",
-			Default: "memphis",
-		},
-	},
+	// {
+	// 	Name: "hostname",
+	// 	Prompt: &survey.Input{
+	// 		Message: "Please provide hostname prefix(Enter to skip if hosted zone NOT provided)",
+	// 		Help:    "It will be added DNS Prefix for privided Hosted Zone Name.",
+	// 		Default: "memphis",
+	// 	},
+	// },
 }
 
 func main() {
@@ -423,11 +432,15 @@ func handleaws(env string, tfinputfilename string, helminputfilename string) err
 	}
 	//Setting up Hostname for Helm input.
 	if awstfinputs.Enabledns {
-		awsekshelminputs.Hostname = fmt.Sprintf("%s.%s.%s", awsekshelminputs.Hostname, env, awstfinputs.Hostedzonename)
-		awsekshelminputs.Hostnamesdk = fmt.Sprintf("%ssdk.%s.%s", awsekshelminputs.Hostname, env, awstfinputs.Hostedzonename)
+		awsekshelminputs.Hostname = fmt.Sprintf("%s.memphis.%s", env, awstfinputs.Hostedzonename)
+		awsekshelminputs.Hostnamesdk = fmt.Sprintf("%ssdk.memphis.%s", env, awstfinputs.Hostedzonename)
+		if awstfinputs.Enablessl {
+			awsekshelminputs.Enablessl = true
+		}
 	} else {
 		awsekshelminputs.Hostname = ""
 		awsekshelminputs.Hostnamesdk = ""
+		awsekshelminputs.Enablessl = false
 	}
 
 	//Writing inputs into Json and Yaml files.

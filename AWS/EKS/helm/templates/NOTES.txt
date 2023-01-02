@@ -3,7 +3,12 @@
      NOTE: It may take a few minutes for the LoadBalancer DNS to be available.
            You can watch the status of by running 'kubectl get --namespace memphis{{ .Values.environment }} ingress -w memphis-ui-alb'
 {{- if .Values.hostname }}
-echo http://{{ .Values.hostname }}
+{{- if .Values.enablessl }}
+echo https://{{ .Values.hostname }}
+{{- else }}
+   http://{{ .Values.hostname }}
+{{- else }}
+{{- end}}
 {{- else }}
 export UIDNS=$(kubectl get ingress --namespace memphis{{ .Values.environment }} memphis-ui-alb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
 echo http://$UIDNS
@@ -12,7 +17,11 @@ echo http://$UIDNS
      NOTE: It may take a few minutes for the LoadBalancer DNS to be available.
            You can watch the status of by running 'kubectl get --namespace memphis{{ .Values.environment }} svc -w memphis-ui-nlb'
   export NLB_DNS=$(kubectl get svc --namespace memphis{{ .Values.environment }} memphis-ui-nlb --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
-  echo http://$NLB_DNS
+  {{- if .Values.enablessl }}
+   https://$NLB_DNS
+  {{- else }}
+   http://$NLB_DNS
+  {{- end}}
 {{- end }}
 2. Get the Memphis SDK Connection Details
      NOTE: It may take a few minutes for the LoadBalancer DNS to be available.

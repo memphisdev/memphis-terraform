@@ -40,3 +40,10 @@ variable "hostedzonename" {
   type = string
   default = ""
 }
+
+
+variable "enable_ssl" {
+  type = bool
+  description = "To use HTTPs/SSL for in-transit communications."
+  default = false
+}

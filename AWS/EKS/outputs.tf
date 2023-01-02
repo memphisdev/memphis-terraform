@@ -22,3 +22,8 @@ output "cluster_name" {
   description = "Kubernetes Cluster Name"
   value       = local.cluster_name
 }
+
+output "certificate_arn" {
+  description = "Certificate ARN for SSL/HTTPS"
+  value       = var.enable_ssl && var.enable_dns ? aws_acm_certificate.cert[0].arn : "NA"
+}
