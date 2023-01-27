@@ -27,3 +27,8 @@ output "certificate_arn" {
   description = "Certificate ARN for SSL/HTTPS"
   value       = var.enable_ssl && var.enable_dns ? aws_acm_certificate.cert[0].arn : "NA"
 }
+
+output "apicertificate_arn" {
+  description = "Rest API Certificate ARN for SSL/HTTPS"
+  value       = var.enable_ssl && var.enable_dns ? aws_acm_certificate.api_cert[0].arn : "NA"
+}

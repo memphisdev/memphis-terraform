@@ -1,0 +1,24 @@
+{{- if eq "nlb" .Values.loadbalancer }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: memphis-api-nlb
+  namespace: memphis{{ .Values.environment }}
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "external"
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip"
+    {{- if .Values.externalType }}
+    service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+    {{- end }}
+    {{- if .Values.hostnameapi }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.hostnameapi }}
+    {{- end }}
+spec:
+  ports:
+  - port: {{ .Values.memphis.apiport }}
+    protocol: TCP
+    targetPort: {{ .Values.memphis.apiport }}
+  selector:
+    app: memphis-http-proxy
+  type: LoadBalancer
+{{- end }}

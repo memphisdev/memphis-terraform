@@ -9,6 +9,8 @@ clusterid=$(terraform output -raw cluster_id)
 echo $clusterid
 certificate_arn=$(terraform output -raw certificate_arn)
 echo $certificate_arn
+apicertificate_arn=$(terraform output -raw apicertificate_arn)
+echo $apicertificate_arn
 aws eks update-kubeconfig --name $clusterid
 helm repo add memphis https://k8s.memphis.dev/charts/
 helm upgrade --install my-memphis memphis/memphis --create-namespace --namespace $namespace
@@ -16,7 +18,7 @@ helm upgrade --install my-memphis memphis/memphis --create-namespace --namespace
 if [ "$environment" = "basic" ]; then
 helm upgrade --install --namespace $namespace -f helm/values.yaml my-memphis-lb ./helm
 else
-helm upgrade --install --namespace $namespace -f helm/values.yaml -f ../../values.aws$environment.yaml --set certificatearn=$certificate_arn my-memphis-lb ./helm
+helm upgrade --install --namespace $namespace -f helm/values.yaml -f ../../values.aws$environment.yaml --set certificatearn=$certificate_arn --set apicertificatearn=$apicertificate_arn my-memphis-lb ./helm
 fi
 ##until kubectl get pods --selector=app=memphis-ui -o=jsonpath="{.items[*].status.phase}" -n $namespace  | grep -q "Running" ; do sleep 1; done
 ##echo "Dashboard: http://$(kubectl get svc memphis-ui -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n $namespace)"

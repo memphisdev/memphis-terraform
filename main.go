@@ -74,6 +74,7 @@ type Awsekshelminputs struct {
 	Externaltype bool   `yaml:"externalType"`
 	Hostname     string `yaml:"hostname"`
 	Hostnamesdk  string `yaml:"hostnamesdk"`
+	Hostnameapi  string `yaml:"hostnameapi"`
 	Enablessl    bool   `yaml:""`
 }
 
@@ -105,7 +106,7 @@ var awsQs = []*survey.Question{
 	{
 		Name: "eksalbaddonregistryaccount",
 		Prompt: &survey.Input{
-			Message: "AWS Provided Account number for EKS Cluster Addons:",
+			Message: "AWS EKS Registry Addon Account Number(NOT YOUR ACCOUNT):",
 			Help:    "EKS Registry details can be found here. https://docs.aws.amazon.com/eks/latest/userguide/add-ons-images.html",
 			Default: "602401143452",
 		},
@@ -433,13 +434,15 @@ func handleaws(env string, tfinputfilename string, helminputfilename string) err
 	//Setting up Hostname for Helm input.
 	if awstfinputs.Enabledns {
 		awsekshelminputs.Hostname = fmt.Sprintf("%s.memphis.%s", env, awstfinputs.Hostedzonename)
-		awsekshelminputs.Hostnamesdk = fmt.Sprintf("%ssdk.memphis.%s", env, awstfinputs.Hostedzonename)
+		awsekshelminputs.Hostnamesdk = fmt.Sprintf("sdk.%s.memphis.%s", env, awstfinputs.Hostedzonename)
+		awsekshelminputs.Hostnameapi = fmt.Sprintf("api.%s.memphis.%s", env, awstfinputs.Hostedzonename)
 		if awstfinputs.Enablessl {
 			awsekshelminputs.Enablessl = true
 		}
 	} else {
 		awsekshelminputs.Hostname = ""
 		awsekshelminputs.Hostnamesdk = ""
+		awsekshelminputs.Hostnameapi = ""
 		awsekshelminputs.Enablessl = false
 	}
 
