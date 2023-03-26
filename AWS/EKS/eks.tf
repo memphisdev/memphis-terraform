@@ -36,7 +36,7 @@ module "eks" {
     }
     benchmark_nodegrp = {
       desired_size   = 1
-      instance_types = ["m6g.8xlarge"]
+      instance_types = ["m5n.8xlarge"]
       labels = {
         NodeGroupType = "benchmark_node_groups"
         Environment   = var.environment
