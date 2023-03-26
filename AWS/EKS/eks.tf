@@ -7,7 +7,6 @@ module "eks" {
   cluster_version                 = "1.24"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
-  ami_type                        = "AL2_ARM_64"
   vpc_id                          = module.vpc.vpc_id
   subnet_ids                      = module.vpc.private_subnets
   cluster_addons = {
@@ -28,6 +27,7 @@ module "eks" {
     managed_nodegrp = {
       desired_size   = 3
       instance_types = ["t4g.medium"]
+      ami_type = "AL2_ARM_64"
       labels = {
         NodeGroupType = "managed_node_groups"
         Environment   = var.environment
@@ -37,6 +37,7 @@ module "eks" {
     benchmark_nodegrp = {
       desired_size   = 1
       instance_types = ["m6g.8xlarge"]
+      ami_type = "AL2_ARM_64"
       labels = {
         NodeGroupType = "benchmark_node_groups"
         Environment   = var.environment
