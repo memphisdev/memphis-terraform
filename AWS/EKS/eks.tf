@@ -4,7 +4,7 @@ module "eks" {
   enable_irsa                     = true
   tags                            = local.tags
   cluster_name                    = local.cluster_name
-  cluster_version                 = "1.23"
+  cluster_version                 = "1.24"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   vpc_id                          = module.vpc.vpc_id
@@ -58,6 +58,14 @@ module "eks" {
       type             = "egress"
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
+    }
+    ingress_4443_from_controlplane = {
+      description                   = "Cluster API to Nodegroup for metrics server"
+      protocol                      = "-1"
+      from_port                     = 0
+      to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = true
     }
   }
 }
