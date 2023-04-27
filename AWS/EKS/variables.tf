@@ -12,7 +12,7 @@ variable "environment" {
 variable "application" {
   description = "Application supported by EKS Cluster"
   type        = string
-  default     = "memphis"
+  default     = "memphis-kela"
 }
 
 variable "vpc_cidr" {
