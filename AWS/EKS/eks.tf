@@ -11,11 +11,11 @@ module "eks" {
   subnet_ids                      = module.vpc.private_subnets
   cluster_addons = {
     coredns = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
     }
     kube-proxy = {}
     vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
     }
   }
   cluster_encryption_config = [{
