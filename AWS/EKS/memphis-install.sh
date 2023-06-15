@@ -11,3 +11,4 @@ echo ""
 echo "To access Memphis using UI/CLI/SDK with service EXTERNAL-IP, use the following URLs:"
 echo "Dashboard/CLI : http://$(kubectl get svc memphis-external -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n memphis):9000"
 echo "Memphis broker: http://$(kubectl get svc memphis-external -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n memphis):6666 (Client Connections)"
+

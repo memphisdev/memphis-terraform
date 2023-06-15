@@ -52,4 +52,4 @@ destroymemphis:
 
 destroyinfra:
 	@echo "Destroy EKS"
-	@terraform destroy   
+	@terraform destroy -auto-approve
