@@ -25,6 +25,8 @@ module "eks" {
 
   eks_managed_node_groups = {
     managed_nodegrp = {
+      min_size       = 7
+      max_size       = 7
       desired_size   = 7
       instance_types = ["im4gn.4xlarge"]
       ami_type = "AL2_ARM_64"
