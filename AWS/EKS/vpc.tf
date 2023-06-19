@@ -24,7 +24,7 @@ module "subnet_addrs" {
 
 module "vpc" {
   source               = "terraform-aws-modules/vpc/aws"
-  version              = "3.14.2"
+  version              = "5.0.0"
   name                 = local.name_prefix
   cidr                 = var.vpc_cidr
   azs                  = data.aws_availability_zones.azs.names
