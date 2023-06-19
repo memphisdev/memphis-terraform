@@ -5,27 +5,27 @@ module "subnet_addrs" {
   networks = [
     {
       name     = "public1"
-      new_bits = 4
+      new_bits = 3
     },
     {
       name     = "public2"
-      new_bits = 4
+      new_bits = 3
     },
     {
       name     = "public3"
-      new_bits = 4
+      new_bits = 3
     },
     {
       name     = "private1"
-      new_bits = 8
+      new_bits = 3
     },
     {
       name     = "private2"
-      new_bits = 8
+      new_bits = 3
     },
     {
       name     = "private3"
-      new_bits = 8
+      new_bits = 3
     },
   ]
 }

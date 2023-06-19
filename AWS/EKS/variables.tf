@@ -6,19 +6,19 @@ variable "region" {
 variable "environment" {
   description = "EKS Cluster environment"
   type        = string
-  default     = "cluster"
+  default     = "cloud"
 }
 
 variable "application" {
   description = "Application supported by EKS Cluster"
   type        = string
-  default     = "memphis-kela"
+  default     = "memphis"
 }
 
 variable "vpc_cidr" {
   description = "CIDR range for VPC of EKS Cluster"
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "10.10.0.0/16"
 }
 
 ## EKS Registry details can be found here. 
