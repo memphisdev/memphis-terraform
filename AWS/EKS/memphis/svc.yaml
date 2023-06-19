@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: memphis-external
   namespace: memphis
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
 spec:
   ports:
   - name: memphis-cp
@@ -17,4 +21,23 @@ spec:
   selector:
     app.kubernetes.io/instance: my-memphis
     app.kubernetes.io/name: memphis
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: memphis-gw-external
+  namespace: memphis
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+spec:
+  ports:
+  - name: restgw
+    port: 4444
+    protocol: TCP
+    targetPort: 4444
+  selector:
+    app: memphis-rest-gateway
   type: LoadBalancer
