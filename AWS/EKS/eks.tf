@@ -25,8 +25,9 @@ module "eks" {
 
   eks_managed_node_groups = {
     managed_nodegrp = {
-      desired_size   = 3
-      instance_types = ["t3.large"]
+      desired_size   = 1
+      instance_types = ["im4gn.4xlarge"]
+      ami_type = "AL2_ARM_64"
       labels = {
         NodeGroupType = "managed_node_groups"
         Environment   = var.environment

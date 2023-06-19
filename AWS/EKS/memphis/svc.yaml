@@ -7,17 +7,21 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 9000
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   ports:
-  - name: memphis-cp
-    port: 9000
+  - name: https
+    port: 443
     targetPort: 9000
-  - name: memphis-cp-tcp
-    port: 6666
-    targetPort: 6666  
   - name: memphis-ws
     port: 7770
     targetPort: 7770 
+  - name: memphis-cp-tcp
+    port: 6666
+    protocol: TCP
+    targetPort: 6666
   selector:
     app.kubernetes.io/instance: my-memphis
     app.kubernetes.io/name: memphis
@@ -32,10 +36,12 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  
+    service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "restgw"
 spec:
   ports:
   - name: restgw
-    port: 4444
+    port: 443
     protocol: TCP
     targetPort: 4444
   selector:
