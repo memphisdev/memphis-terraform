@@ -2,7 +2,7 @@ clusterid=$(terraform output -raw cluster_id)
 echo $clusterid
 aws eks update-kubeconfig --name $clusterid
 helm repo add memphis https://k8s.memphis.dev/charts/
-helm install my-memphis memphis/memphis --create-namespace --namespace memphis --wait
+helm install my-memphis memphis/memphis --set global.cluster.enabled="true" --create-namespace --namespace memphis --wait
 kubectl apply -f memphis/svc.yaml
 until kubectl get svc memphis-external -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}' -n memphis| grep -q ""; do sleep 1; done
 echo ""

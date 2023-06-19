@@ -69,5 +69,13 @@ module "eks" {
       cidr_blocks      = ["0.0.0.0/0"]
       ipv6_cidr_blocks = ["::/0"]
     }
+    ingress_4443_from_controlplane = {
+      description                   = "Cluster API to Nodegroup for metrics server"
+      protocol                      = "-1"
+      from_port                     = 0
+      to_port                       = 4443
+      type                          = "ingress"
+      source_cluster_security_group = true
+    }
   }
 }
