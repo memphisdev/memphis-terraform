@@ -8,7 +8,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
     service.beta.kubernetes.io/aws-load-balancer-healthcheck-port: 9000
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  arn:aws:acm:us-east-1:221323242847:certificate/72a1545e-8c10-4b7b-a262-83dc40a2e1db
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
 spec:
   ports:
@@ -36,7 +36,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-type: external
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
     service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  arn:aws:acm:us-east-1:221323242847:certificate/34b3e289-82d5-49f2-9388-1de32dc21a62
+    service.beta.kubernetes.io/aws-load-balancer-ssl-cert:  
     service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "restgw"
 spec:
   ports:
