@@ -19,11 +19,14 @@ resource "kubernetes_service_account" "ebscsi-service-account" {
     name      = "ebs-csi-controller-sa"
     namespace = "kube-system"
     labels = {
-      "app.kubernetes.io/name"      = "aws-ebs-csi-driver"
-      "app.kubernetes.io/component" = "controller"
+      "app.kubernetes.io/name"       = "aws-ebs-csi-driver"
+      "app.kubernetes.io/component"  = "controller"
+      "app.kubernetes.io/managed-by" = "Helm"     
     }
     annotations = {
-      "eks.amazonaws.com/role-arn" = module.ebs_csi_irsa_role.iam_role_arn
+      "eks.amazonaws.com/role-arn"     = module.ebs_csi_irsa_role.iam_role_arn
+      "meta.helm.sh/release-name"      = "aws-ebs-csi-driver"
+      "meta.helm.sh/release-namespace" = "kube-system"
     }
   }
 }
@@ -33,7 +36,7 @@ resource "helm_release" "eks-ebscsi" {
   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
   chart      = "aws-ebs-csi-driver"
   namespace  = "kube-system"
-  version    = "1.2.4"
+  version    = "2.10.1"
   depends_on = [
     kubernetes_service_account.ebscsi-service-account
   ]
