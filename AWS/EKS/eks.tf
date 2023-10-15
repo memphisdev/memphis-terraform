@@ -4,7 +4,7 @@ module "eks" {
   enable_irsa                     = true
   tags                            = local.tags
   cluster_name                    = local.cluster_name
-  cluster_version                 = "1.26"
+  cluster_version                 = "1.25"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   vpc_id                          = module.vpc.vpc_id
