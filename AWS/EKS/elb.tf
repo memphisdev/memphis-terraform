@@ -31,6 +31,7 @@ resource "helm_release" "eks-alb" {
   name       = "aws-load-balancer-controller"
   repository = "https://aws.github.io/eks-charts"
   chart      = "aws-load-balancer-controller"
+  version    = "1.6.1"
   namespace  = "kube-system"
   depends_on = [
     kubernetes_service_account.alb-service-account
