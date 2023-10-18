@@ -1,6 +1,6 @@
 module "alb_controller_irsa_role" {
   source                                 = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  role_name                              = "${local.name_prefix}-albcontroller"
+  role_name                              = "${local.name_prefix}-albcontroller-${random_string.suffix.result}"
   attach_load_balancer_controller_policy = true
   oidc_providers = {
     main = {

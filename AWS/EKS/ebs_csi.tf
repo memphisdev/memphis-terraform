@@ -1,7 +1,7 @@
 module "ebs_csi_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name             = "${local.name_prefix}-ebs-csi"
+  role_name             = "${local.name_prefix}-ebs-csi-${random_string.suffix.result}"
   attach_ebs_csi_policy = true
   ebs_csi_kms_cmk_ids   = [aws_kms_key.eks.arn]
   oidc_providers = {

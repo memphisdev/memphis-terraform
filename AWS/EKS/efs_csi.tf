@@ -2,7 +2,7 @@ module "vpc_cni_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 5.0"
 
-  role_name_prefix      = "${local.name_prefix}-efs-csi"
+  role_name_prefix      = "${local.name_prefix}-efs-csi-${random_string.suffix.result}"
   attach_vpc_cni_policy = true
   vpc_cni_enable_ipv4   = true
 
@@ -44,7 +44,7 @@ resource "helm_release" "aws_efs_csi_driver" {
 module "attach_efs_csi_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name             = "efs-csi"
+  role_name             = "efs-csi-${random_string.suffix.result}"
   attach_efs_csi_policy = true
 
   oidc_providers = {
@@ -79,7 +79,7 @@ resource "kubernetes_storage_class" "ebs_efs_storage_class" {
 }
 
 resource "aws_security_group" "efs" {
-  name        = "efs"
+  name        = "efs-${random_string.suffix.result}"
   description = "Allow traffic"
   vpc_id      = module.vpc.vpc_id
 
@@ -93,7 +93,7 @@ resource "aws_security_group" "efs" {
 }
 
 resource "aws_iam_policy" "node_efs_policy" {
-  name        = "eks_node_efs"
+  name        = "eks_node_efs-${random_string.suffix.result}"
   path        = "/"
   description = "Policy for EFKS nodes to use EFS"
 
@@ -119,7 +119,8 @@ resource "aws_iam_policy" "node_efs_policy" {
 }
 
 resource "aws_efs_file_system" "kube" {
-  creation_token = "eks-efs"
+  creation_token = "eks-efs-${random_string.suffix.result}"
+  encrypted       = true
 }
 
 resource "aws_efs_mount_target" "mount" {
