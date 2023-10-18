@@ -11,6 +11,6 @@ resource "aws_kms_key" "eks" {
 }
 
 resource "aws_kms_alias" "eks" {
-  name          = "alias/${local.name_prefix}"
+  name          = "alias/${local.name_prefix}-${random_string.suffix.result}"
   target_key_id = aws_kms_key.eks.key_id
 }
