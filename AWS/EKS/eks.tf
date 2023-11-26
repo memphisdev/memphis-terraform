@@ -4,18 +4,18 @@ module "eks" {
   enable_irsa                     = true
   tags                            = local.tags
   cluster_name                    = local.cluster_name
-  cluster_version                 = "1.24"
+  cluster_version                 = "1.25"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
   vpc_id                          = module.vpc.vpc_id
   subnet_ids                      = module.vpc.private_subnets
   cluster_addons = {
     coredns = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
     }
     kube-proxy = {}
     vpc-cni = {
-      resolve_conflicts = "OVERWRITE"
+      resolve_conflicts_on_create = "OVERWRITE"
     }
   }
   cluster_encryption_config = [{

@@ -21,6 +21,11 @@ Terraform codifies cloud APIs into declarative configuration files.
 5. Terraform is [installed](https://learn.hashicorp.com/tutorials/terraform/install-cli?in=terraform/aws-get-started)
 6. Kubectl is [installed](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 7. helm is [installed](https://helm.sh/docs/intro/install/)
+8. You should enable container googleapis:
+
+```
+gcloud services enable container.googleapis.com
+```
 
 ### Terraform Installation Flow
 
